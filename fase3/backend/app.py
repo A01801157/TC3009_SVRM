@@ -107,7 +107,13 @@ def chat():
     if not texto:
         return jsonify({"error": 'se esperaba {"mensaje": "..."} y no llego'}), 400
 
+
     try:
+        if conversacion_id is not None and not db.existe(conversacion_id):
+            return jsonify({"error": f"no existe la conversacion {conversacion_id}"}), 404
+        historial = db.leer_mensajes(conversacion_id) 
+        db.guardar_mensaje(conversacion_id, "user", texto)
+        
         # COMPLETA 3 — engancha la base con el modelo.
         #
         # Cuatro pasos, y el ORDEN importa:
